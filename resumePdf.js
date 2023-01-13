@@ -2,6 +2,7 @@ const { fontSize } = require("pdfkit");
 const PDFDocument = require("pdfkit");
 
 function buildResume(resumeData, dataCallBack, endCallBack) {
+  console.log(resumeData);
   const doc = new PDFDocument({
     size: "A4", //595.28 X 841.89
   });
@@ -14,7 +15,9 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   doc.on("data", dataCallBack);
   doc.on("end", endCallBack);
 
-  doc.rect(0, 0, (2 / 3) * pageWidth, pageHeight).fill("#E8F9FD");
+  doc
+    .rect(0, 0, (2 / 3) * pageWidth, pageHeight)
+    .fill(resumeData.colors.value.primColor);
 
   doc
     .fontSize(34)
@@ -43,7 +46,10 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
         .fontSize(9)
         .text(experience.summary, { width: pageWidth / 2 });
 
-      doc.fillColor("#E8F9FD").text("line gap").fillColor("#000000");
+      doc
+        .fillColor(resumeData.colors.value.primColor)
+        .text("line gap")
+        .fillColor("#000000");
     }
   });
   // console.log("height of string", doc.heightOfString("line gap"));
@@ -59,7 +65,7 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   //     { width: pageWidth / 2 }
   //   );
 
-  // doc.fillColor("#E8F9FD").text("line gap").fillColor("#000000");
+  // doc.fillColor(resumeData.colors.value.primColor).text("line gap").fillColor("#000000");
 
   // doc
   //   .fontSize(14)
@@ -85,7 +91,10 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
         .text(project.name)
         .fontSize(9)
         .text(project.about, { width: pageWidth / 2 });
-      doc.fillColor("#E8F9FD").text("line gap").fillColor("#000000");
+      doc
+        .fillColor(resumeData.colors.value.primColor)
+        .text("line gap")
+        .fillColor("#000000");
     }
   });
   // doc
@@ -96,7 +105,7 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   //     "I have made this website using angular framework and TMDB api. It is hosted at limflix.netlify.app",
   //     { width: pageWidth / 2 }
   //   );
-  // doc.fillColor("#E8F9FD").text("line gap").fillColor("#000000");
+  // doc.fillColor(resumeData.colors.value.primColor).text("line gap").fillColor("#000000");
   // doc
   //   .fontSize(14)
   //   .text("Limflix - Netflix Clone")
@@ -107,7 +116,7 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   //   );
   doc
     .rect((2 / 3) * pageWidth, 0, (1 / 3) * pageWidth, pageHeight)
-    .fill("#59CE8F");
+    .fill(resumeData.colors.value.secColor);
 
   doc.image(imagePath + "Contact.png", (2 / 3) * pageWidth + 7, 38, {
     width: 10,
@@ -122,7 +131,10 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
     .text(resumeData.contactDetails.value.email, {
       width: (1 / 3) * pageWidth - 70,
     });
-  doc.fillColor("#59CE8F").text("line gap").fillColor("#000000");
+  doc
+    .fillColor(resumeData.colors.value.secColor)
+    .text("line gap")
+    .fillColor("#000000");
   doc
     .font(fontPath + "Poppins-SemiBold.ttf")
     .fillColor("#000000")
@@ -133,7 +145,10 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
     .text("India", {
       width: (1 / 3) * pageWidth - 70,
     });
-  doc.fillColor("#59CE8F").text("line gap").fillColor("#000000");
+  doc
+    .fillColor(resumeData.colors.value.secColor)
+    .text("line gap")
+    .fillColor("#000000");
   doc
     .font(fontPath + "Poppins-SemiBold.ttf")
     .fillColor("#000000")
@@ -144,13 +159,17 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
     .text(resumeData.contactDetails.value.phone, {
       width: (1 / 3) * pageWidth - 70,
     });
-  doc.fillColor("#59CE8F").fontSize(20).text("line gap").fillColor("#000000");
+  doc
+    .fillColor(resumeData.colors.value.secColor)
+    .fontSize(20)
+    .text("line gap")
+    .fillColor("#000000");
   const topDist3 = doc.y;
   doc.image(imagePath + "Education.png", (2 / 3) * pageWidth + 7, topDist3, {
     width: 10,
   });
   doc
-    .fillColor("#59CE8F")
+    .fillColor(resumeData.colors.value.secColor)
     .text("line gap", (2 / 3) * pageWidth + 34, topDist3 - 35)
     .fillColor("#000000");
   resumeData.educationDetails.value.educationList.forEach((education) => {
@@ -164,7 +183,10 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
         .text(education.marks)
         .text(education.location)
         .text(education.year);
-      doc.fillColor("#59CE8F").text("line gap").fillColor("#000000");
+      doc
+        .fillColor(resumeData.colors.value.secColor)
+        .text("line gap")
+        .fillColor("#000000");
     }
   });
   // doc
@@ -180,7 +202,7 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   //   .text("87%")
   //   .text("Banswara")
   //   .text(2024);
-  // doc.fillColor("#59CE8F").text("line gap").fillColor("#000000");
+  // doc.fillColor(resumeData.colors.value.secColor).text("line gap").fillColor("#000000");
   // doc
   //   .font(fontPath + "Poppins-SemiBold.ttf")
   //   .fontSize(11)
@@ -190,13 +212,17 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   //   .text("87%")
   //   .text("Banswara")
   //   .text(2024);
-  doc.fillColor("#59CE8F").fontSize(20).text("line gap").fillColor("#000000");
+  doc
+    .fillColor(resumeData.colors.value.secColor)
+    .fontSize(20)
+    .text("line gap")
+    .fillColor("#000000");
   const topDist4 = doc.y;
   doc.image(imagePath + "Skills.png", (2 / 3) * pageWidth + 7, topDist4, {
     width: 10,
   });
   doc
-    .fillColor("#59CE8F")
+    .fillColor(resumeData.colors.value.secColor)
     .text("line gap", (2 / 3) * pageWidth + 34, topDist4 - 35)
     .fillColor("#000000");
   doc.font(fontPath + "Poppins-Medium.ttf").fontSize(11);
@@ -208,13 +234,17 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   // .text("HTML")
   // .text("HTML")
   // .text("HTML");
-  doc.fillColor("#59CE8F").fontSize(20).text("line gap").fillColor("#000000");
+  doc
+    .fillColor(resumeData.colors.value.secColor)
+    .fontSize(20)
+    .text("line gap")
+    .fillColor("#000000");
   const topDist5 = doc.y;
   doc.image(imagePath + "Socials.png", (2 / 3) * pageWidth + 7, topDist5, {
     width: 10,
   });
   doc
-    .fillColor("#59CE8F")
+    .fillColor(resumeData.colors.value.secColor)
     .text("line gap", (2 / 3) * pageWidth + 34, topDist5 - 35)
     .fillColor("#000000");
   doc.font(fontPath + "Poppins-Medium.ttf").fontSize(11);
