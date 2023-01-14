@@ -1,4 +1,3 @@
-const { fontSize } = require("pdfkit");
 const PDFDocument = require("pdfkit");
 
 function buildResume(resumeData, dataCallBack, endCallBack) {
@@ -31,9 +30,12 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
 
   const topDist = doc.y;
 
-  doc.image(imagePath + "Experience.png", 7, topDist + 40, {
-    width: 17,
-  });
+  if (resumeData.experiences.value.experiences.length > 1) {
+    doc.image(imagePath + "Experience.png", 7, topDist + 40, {
+      width: 17,
+    });
+  }
+
   doc.text("", 34, topDist + 35);
   resumeData.experiences.value.experiences.forEach((experience) => {
     if (experience.post.length) {
@@ -52,37 +54,14 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
         .fillColor("#000000");
     }
   });
-  // console.log("height of string", doc.heightOfString("line gap"));
-  // doc
-  //   .fontSize(14)
-  //   .text("Frontend Developer")
-  //   .text("Thinkgroupy Services Pvt. Ltd.")
-  //   .fontSize(11)
-  //   .text("22 Aug - 14 Nov")
-  //   .fontSize(9)
-  //   .text(
-  //     "I worked as a Frontend Developer. I developed their website by myself usign Angular framework.",
-  //     { width: pageWidth / 2 }
-  //   );
-
-  // doc.fillColor(resumeData.colors.value.primColor).text("line gap").fillColor("#000000");
-
-  // doc
-  //   .fontSize(14)
-  //   .text("Frontend Developer")
-  //   .text("Thinkgroupy Services Pvt. Ltd.")
-  //   .fontSize(11)
-  //   .text("22 Aug - 14 Nov")
-  //   .fontSize(9)
-  //   .text(
-  //     "I worked as a Frontend Developer. I developed their website by myself usign Angular framework.",
-  //     { width: pageWidth / 2 }
-  //   );
 
   const topDist2 = doc.y;
-  doc.image(imagePath + "Projects.png", 7, topDist2 + 27, {
-    width: 17,
-  });
+  if (resumeData.projects.value.projects.length > 1) {
+    doc.image(imagePath + "Projects.png", 7, topDist2 + 27, {
+      width: 17,
+    });
+  }
+
   doc.text("", 34, topDist2 + 22);
   resumeData.projects.value.projects.forEach((project) => {
     if (project.name.length) {
@@ -97,77 +76,80 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
         .fillColor("#000000");
     }
   });
-  // doc
-  //   .fontSize(14)
-  //   .text("Limflix - Netflix Clone")
-  //   .fontSize(9)
-  //   .text(
-  //     "I have made this website using angular framework and TMDB api. It is hosted at limflix.netlify.app",
-  //     { width: pageWidth / 2 }
-  //   );
-  // doc.fillColor(resumeData.colors.value.primColor).text("line gap").fillColor("#000000");
-  // doc
-  //   .fontSize(14)
-  //   .text("Limflix - Netflix Clone")
-  //   .fontSize(9)
-  //   .text(
-  //     "I have made this website using angular framework and TMDB api. It is hosted at limflix.netlify.app",
-  //     { width: pageWidth / 2 }
-  //   );
+
   doc
     .rect((2 / 3) * pageWidth, 0, (1 / 3) * pageWidth, pageHeight)
     .fill(resumeData.colors.value.secColor);
+  if (resumeData.contactDetails.value.email.length) {
+    doc.image(imagePath + "Contact.png", (2 / 3) * pageWidth + 7, 38, {
+      width: 10,
+    });
+  }
 
-  doc.image(imagePath + "Contact.png", (2 / 3) * pageWidth + 7, 38, {
-    width: 10,
-  });
   doc
     .font(fontPath + "Poppins-SemiBold.ttf")
     .fillColor("#000000")
-    .fontSize(11)
-    .text("Email", (2 / 3) * pageWidth + 34, 34)
-    .font(fontPath + "Poppins-Medium.ttf")
-    .fontSize(10)
-    .text(resumeData.contactDetails.value.email, {
-      width: (1 / 3) * pageWidth - 70,
-    });
-  doc
-    .fillColor(resumeData.colors.value.secColor)
-    .text("line gap")
-    .fillColor("#000000");
-  doc
-    .font(fontPath + "Poppins-SemiBold.ttf")
-    .fillColor("#000000")
-    .fontSize(11)
-    .text("Nationality")
-    .font(fontPath + "Poppins-Medium.ttf")
-    .fontSize(10)
-    .text("India", {
-      width: (1 / 3) * pageWidth - 70,
-    });
-  doc
-    .fillColor(resumeData.colors.value.secColor)
-    .text("line gap")
-    .fillColor("#000000");
+    .fontSize(11);
+  if (resumeData.contactDetails.value.email) {
+    doc.text("Email", (2 / 3) * pageWidth + 34, 34);
+    doc
+      .font(fontPath + "Poppins-Medium.ttf")
+      .fontSize(10)
+      .text(resumeData.contactDetails.value.email, {
+        width: (1 / 3) * pageWidth - 70,
+      });
+    doc
+      .fillColor(resumeData.colors.value.secColor)
+      .text("line gap")
+      .fillColor("#000000");
+  }
+
   doc
     .font(fontPath + "Poppins-SemiBold.ttf")
     .fillColor("#000000")
-    .fontSize(11)
-    .text("Phone Number")
-    .font(fontPath + "Poppins-Medium.ttf")
-    .fontSize(10)
-    .text(resumeData.contactDetails.value.phone, {
-      width: (1 / 3) * pageWidth - 70,
-    });
+    .fontSize(11);
+  if (resumeData.contactDetails.value.nationality.length) {
+    doc.text("Nationality");
+
+    doc
+      .font(fontPath + "Poppins-Medium.ttf")
+      .fontSize(10)
+      .text(resumeData.contactDetails.value.nationality, {
+        width: (1 / 3) * pageWidth - 70,
+      });
+    doc
+      .fillColor(resumeData.colors.value.secColor)
+      .text("line gap")
+      .fillColor("#000000");
+  }
+
   doc
-    .fillColor(resumeData.colors.value.secColor)
-    .fontSize(20)
-    .text("line gap")
-    .fillColor("#000000");
+    .font(fontPath + "Poppins-SemiBold.ttf")
+    .fillColor("#000000")
+    .fontSize(11);
+  if (resumeData.contactDetails.value.phone.length) {
+    doc.text("Phone Number");
+    doc
+      .font(fontPath + "Poppins-Medium.ttf")
+      .fontSize(10)
+      .text(resumeData.contactDetails.value.phone, {
+        width: (1 / 3) * pageWidth - 70,
+      });
+    doc
+      .fillColor(resumeData.colors.value.secColor)
+      .fontSize(20)
+      .text("line gap")
+      .fillColor("#000000");
+  }
+
   const topDist3 = doc.y;
-  doc.image(imagePath + "Education.png", (2 / 3) * pageWidth + 7, topDist3, {
-    width: 10,
-  });
+
+  if (resumeData.educationDetails.value.educationList.length > 1) {
+    doc.image(imagePath + "Education.png", (2 / 3) * pageWidth + 7, topDist3, {
+      width: 10,
+    });
+  }
+
   doc
     .fillColor(resumeData.colors.value.secColor)
     .text("line gap", (2 / 3) * pageWidth + 34, topDist3 - 35)
@@ -189,38 +171,19 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
         .fillColor("#000000");
     }
   });
-  // doc
-  //   .font(fontPath + "Poppins-SemiBold.ttf")
-  //   .fontSize(11)
-  //   .text(
-  //     "Bachelors in Computer Application",
-  //     (2 / 3) * pageWidth + 34,
-  //     topDist3 - 5
-  //   )
-  //   .font(fontPath + "Poppins-Medium.ttf")
-  //   .text("Leo College")
-  //   .text("87%")
-  //   .text("Banswara")
-  //   .text(2024);
-  // doc.fillColor(resumeData.colors.value.secColor).text("line gap").fillColor("#000000");
-  // doc
-  //   .font(fontPath + "Poppins-SemiBold.ttf")
-  //   .fontSize(11)
-  //   .text("Bachelors in Computer Application")
-  //   .font(fontPath + "Poppins-Medium.ttf")
-  //   .text("Leo College")
-  //   .text("87%")
-  //   .text("Banswara")
-  //   .text(2024);
+
   doc
     .fillColor(resumeData.colors.value.secColor)
     .fontSize(20)
     .text("line gap")
     .fillColor("#000000");
   const topDist4 = doc.y;
-  doc.image(imagePath + "Skills.png", (2 / 3) * pageWidth + 7, topDist4, {
-    width: 10,
-  });
+  if (resumeData.skills.value.skills.length > 1) {
+    doc.image(imagePath + "Skills.png", (2 / 3) * pageWidth + 7, topDist4, {
+      width: 10,
+    });
+  }
+
   doc
     .fillColor(resumeData.colors.value.secColor)
     .text("line gap", (2 / 3) * pageWidth + 34, topDist4 - 35)
@@ -229,20 +192,19 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   resumeData.skills.value.skills.forEach((skill) => {
     doc.text(skill);
   });
-  // .text("HTML")
-  // .text("HTML")
-  // .text("HTML")
-  // .text("HTML")
-  // .text("HTML");
+
   doc
     .fillColor(resumeData.colors.value.secColor)
     .fontSize(20)
     .text("line gap")
     .fillColor("#000000");
   const topDist5 = doc.y;
-  doc.image(imagePath + "Socials.png", (2 / 3) * pageWidth + 7, topDist5, {
-    width: 10,
-  });
+  if (resumeData.socialLinks.value.social.length > 1) {
+    doc.image(imagePath + "Socials.png", (2 / 3) * pageWidth + 7, topDist5, {
+      width: 10,
+    });
+  }
+
   doc
     .fillColor(resumeData.colors.value.secColor)
     .text("line gap", (2 / 3) * pageWidth + 34, topDist5 - 35)
@@ -251,8 +213,6 @@ function buildResume(resumeData, dataCallBack, endCallBack) {
   resumeData.socialLinks.value.social.forEach((social) => {
     doc.text(social);
   });
-  // .text("LinkedIn", (2 / 3) * pageWidth + 34, topDist5 - 5)
-  // .text("Github");
 
   doc.end();
 }
